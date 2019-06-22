@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book.management.dao.BookInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.book.management.model.BookInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="book_serial" property="bookSerial" jdbcType="VARCHAR" />
+    <result column="book_name" property="bookName" jdbcType="VARCHAR" />
+    <result column="book_author" property="bookAuthor" jdbcType="VARCHAR" />
+    <result column="book_publish" property="bookPublish" jdbcType="VARCHAR" />
+    <result column="book_price" property="bookPrice" jdbcType="DECIMAL" />
+    <result column="book_state" property="bookState" jdbcType="INTEGER" />
+    <result column="book_type" property="bookType" jdbcType="INTEGER" />
+    <result column="book_shelf" property="bookShelf" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.book.management.model.BookInfo" extends="BaseResultMap" >
+    <result column="book_introduction" property="bookIntroduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, book_serial, book_name, book_author, book_publish, book_price, book_state, book_type, 
+    book_shelf, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    book_introduction
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_book_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_book_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.book.management.model.BookInfo" >
+    insert into t_book_info (id, book_serial, book_name, 
+      book_author, book_publish, book_price, 
+      book_state, book_type, book_shelf, 
+      create_time, update_time, book_introduction
+      )
+    values (#{id,jdbcType=INTEGER}, #{bookSerial,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR}, 
+      #{bookAuthor,jdbcType=VARCHAR}, #{bookPublish,jdbcType=VARCHAR}, #{bookPrice,jdbcType=DECIMAL}, 
+      #{bookState,jdbcType=INTEGER}, #{bookType,jdbcType=INTEGER}, #{bookShelf,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{bookIntroduction,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.book.management.model.BookInfo" >
+    insert into t_book_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bookSerial != null" >
+        book_serial,
+      </if>
+      <if test="bookName != null" >
+        book_name,
+      </if>
+      <if test="bookAuthor != null" >
+        book_author,
+      </if>
+      <if test="bookPublish != null" >
+        book_publish,
+      </if>
+      <if test="bookPrice != null" >
+        book_price,
+      </if>
+      <if test="bookState != null" >
+        book_state,
+      </if>
+      <if test="bookType != null" >
+        book_type,
+      </if>
+      <if test="bookShelf != null" >
+        book_shelf,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="bookIntroduction != null" >
+        book_introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookSerial != null" >
+        #{bookSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null" >
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookAuthor != null" >
+        #{bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPublish != null" >
+        #{bookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPrice != null" >
+        #{bookPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bookState != null" >
+        #{bookState,jdbcType=INTEGER},
+      </if>
+      <if test="bookType != null" >
+        #{bookType,jdbcType=INTEGER},
+      </if>
+      <if test="bookShelf != null" >
+        #{bookShelf,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookIntroduction != null" >
+        #{bookIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book.management.model.BookInfo" >
+    update t_book_info
+    <set >
+      <if test="bookSerial != null" >
+        book_serial = #{bookSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null" >
+        book_name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookAuthor != null" >
+        book_author = #{bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPublish != null" >
+        book_publish = #{bookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPrice != null" >
+        book_price = #{bookPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bookState != null" >
+        book_state = #{bookState,jdbcType=INTEGER},
+      </if>
+      <if test="bookType != null" >
+        book_type = #{bookType,jdbcType=INTEGER},
+      </if>
+      <if test="bookShelf != null" >
+        book_shelf = #{bookShelf,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookIntroduction != null" >
+        book_introduction = #{bookIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.book.management.model.BookInfo" >
+    update t_book_info
+    set book_serial = #{bookSerial,jdbcType=VARCHAR},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      book_author = #{bookAuthor,jdbcType=VARCHAR},
+      book_publish = #{bookPublish,jdbcType=VARCHAR},
+      book_price = #{bookPrice,jdbcType=DECIMAL},
+      book_state = #{bookState,jdbcType=INTEGER},
+      book_type = #{bookType,jdbcType=INTEGER},
+      book_shelf = #{bookShelf,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      book_introduction = #{bookIntroduction,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book.management.model.BookInfo" >
+    update t_book_info
+    set book_serial = #{bookSerial,jdbcType=VARCHAR},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      book_author = #{bookAuthor,jdbcType=VARCHAR},
+      book_publish = #{bookPublish,jdbcType=VARCHAR},
+      book_price = #{bookPrice,jdbcType=DECIMAL},
+      book_state = #{bookState,jdbcType=INTEGER},
+      book_type = #{bookType,jdbcType=INTEGER},
+      book_shelf = #{bookShelf,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
