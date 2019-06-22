@@ -1,5 +1,6 @@
 # library-management
 图书管理系统(开发流程学习)
+参考：https://github.com/luhailiang98/book.git
 
 ## 技术架构
 
