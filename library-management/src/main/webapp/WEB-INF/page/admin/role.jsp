@@ -1,28 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-%>
 <html>
 <head>
     <title>MYLIBRARY-角色管理</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/color.css">
-    <link rel="stylesheet" href="/static/bower_components/ztree/zTreeStyle.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/dist/css/AdminLTE.min.css">
+    <link rel="shortcut icon" href="<%=basePath%>/static/favicon.ico"/>
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/metro/easyui.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/ztree/zTreeStyle.css">
     <style>
         .datagrid-header-row, .datagrid-row {
             height: 45px;
         }
-
         body {
             font-family: verdana, helvetica, arial, sans-serif;
         }
@@ -44,9 +39,8 @@
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
+            <%-- 搜索头 --%>
             <div class="box box-info" style="margin-bottom: 2px">
-
-
                 <div class="easyui-accordion" style="width:100%">
                     <div title="按条件查询:" data-options="iconCls:'icon-search'" style="overflow:auto;padding:10px">
                         角色名:&nbsp;<input type="text" id="s_roleName" size="20"
@@ -60,18 +54,17 @@
                     </div>
                 </div>
             </div>
-
-
+            <!-- 展示数据表 -->
             <table id="dg" title="角色列表" iconCls="icon-man" class="easyui-datagrid" width="100%"
-                   url="/role/list"
+                   url="<%=basePath%>/role/list"
                    toolbar="#tb" pagination="true"
                    rownumbers="true" fitColumns="true" singleSelect="false">
                 <thead>
                 <%--<th field="userId" width="10" align="center">编号</th>--%>
                 <th field="ck" checkbox="true"></th>
                 <th field="roleName" width="55" align="center">角色名</th>
-                <th field="roleCreateTime" width="55" align="center">创建时间</th>
-                <th field="roleLastModifyTime" width="55" align="center">更新时间</th>
+                <th field="createTime" width="55" align="center">创建时间</th>
+                <th field="updateTime" width="55" align="center">更新时间</th>
                 <th field="aa" width="55" align="center" formatter="formatOperate">操作</th>
                 </thead>
             </table>
@@ -140,19 +133,19 @@
 </section>
 
 <!-- jQuery 3 -->
-<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="<%=basePath%>/static/dist/js/adminlte.min.js"></script>
 <!-- layer -->
-<script src="/static/bower_components/layer-v3.1.1/layer/layer.js"></script>
+<script src="<%=basePath%>/static/bower_components/layer-v3.1.1/layer/layer.js"></script>
 <!-- jquery easyui -->
-<script src="/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
-<script src="/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 <!-- ztree -->
-<script src="/static/bower_components/ztree/jquery.ztree.all-3.5.min.js"></script>
-<script src="/static/js/loading.js"></script>
+<script src="<%=basePath%>/static/bower_components/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script src="<%=basePath%>/static/js/loading.js"></script>
 
 <script>
     if ($.fn.datagrid) {
@@ -161,30 +154,37 @@
     }
 
     function formatOperate(value, row) {
-        return "<button onclick='openPermissionChooseDialog(" + row.roleId + ")' class='btn-success'>分配权限</button> ";
+        return "<button onclick='openPermissionChooseDialog(" + row.id + ")' class='btn-success'>分配权限</button> ";
     }
 
-
+    //重置搜索
     function resetSearchValue() {
         $("#s_roleName").val("");
         searchRole();
     }
 
+    //搜索内容
     function searchRole() {
+        //执行easy dataTable搜索
         $("#dg").datagrid("load", {
             "roleName": $("#s_roleName").val()
         })
     }
 
-
     var url;
 
+    /**
+     * 打开添加角色对话框
+     */
     function openRoleAddDialog() {
         $("#dlg").dialog("open").dialog("center").dialog("setTitle", "新增角色信息");
         $("#fm").form("clear");
-        url = "/role/save";
+        url = "<%=basePath%>/role/save";
     }
 
+    /**
+     * 执行保存
+     */
     function saveRole() {
         $.ajax({
             type: "POST",
@@ -209,6 +209,9 @@
         });
     }
 
+    /**
+     * 打开角色修改对话框
+     */
     function openRoleModifyDialog() {
         var selectedRows = $("#dg").datagrid("getSelections");
         if (selectedRows.length != 1) {
@@ -218,9 +221,12 @@
         var row = selectedRows[0];
         $("#dlg1").dialog("open").dialog("center").dialog("setTitle", "修改角色信息");
         $("#fm1").form("load", row);
-        url = "/role/update?roleId=" + row.roleId;
+        url = "<%=basePath%>/role/update?id=" + row.id;
     }
 
+    /**
+     * 执行角色更新
+     */
     function updateRole() {
         $.ajax({
             type: "PUT",
@@ -246,18 +252,21 @@
         });
     }
 
+    /**
+     * 删除角色
+     */
     function deleteRole() {
         var selectedRows = $("#dg").datagrid("getSelections");
         if (selectedRows.length != 1) {
             $.messager.alert("系统提示", "请选择一条要删除的数据！");
             return;
         }
-        var roleId = selectedRows[0].roleId;
+        var roleId = selectedRows[0].id;
         $.messager.confirm("系统提示", "您确定要删除这条数据吗?", function (r) {
             if (r) {
                 $.ajax({
                     type: "DELETE",
-                    url: "/role/delete?roleId=" + roleId,
+                    url: "<%=basePath%>/role/delete?id=" + roleId,
                     success: function (res) {
                         if (res.ret) {
                             $.messager.alert("系统提示", "删除成功！");
@@ -277,13 +286,17 @@
             onDblClickRow: function (index, row) {
                 $("#dlg1").dialog("open").dialog("setTitle", "修改角色信息");
                 $("#fm1").form("load", row);
-                url = "/role/update?roleId=" + row.roleId;
+                url = "<%=basePath%>/role/update?roleId=" + row.roleId;
             }
         });
 
     });
 
 
+    /**
+     * 打开权限选择对话框
+     * @param roleId
+     */
     function openPermissionChooseDialog(roleId) {
         $("#roleId").val(roleId);
         $("#dlg2").dialog("open").dialog("center").dialog("setTitle", "选择权限");
@@ -291,9 +304,10 @@
             check: {
                 enable: true
             },
-            async: {
+            async: {//请求加载数据（需要返回json数据）
                 enable: true,
-                url: "/permission/loadRolePermissionData?roleId=" + roleId,
+                type: "post",
+                url: "<%=basePath%>/permission/loadRolePermissionData?roleId=" + roleId,
                 // autoParam:["id=permissionId", "name=permissionName", "level=lv"]
             },
             data: {
@@ -301,22 +315,22 @@
                     name: "permissionName"
                 }
             },
-            view: {
+            view: {//视图
                 selectedMulti: false,
                 addDiyDom: function (treeId, treeNode) {
                     var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
-                    if (treeNode.permissionIcon) {
-                        icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.permissionIcon).css("background", "");
+                    if (treeNode.icon) {
+                        icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background", "");
                     }
-
                 }
             }
         };
-
         $.fn.zTree.init($("#permissionTree"), setting);
-
     }
 
+    /**
+     * 保存权限设定
+     */
     function savePermissionSet() {
         var treeObj = $.fn.zTree.getZTreeObj("permissionTree");
         var nodes = treeObj.getCheckedNodes(true);
@@ -326,12 +340,12 @@
             var roleId = $("#roleId").val();
             var strPermissionIds = [];
             for (var i = 0; i < nodes.length; i++) {
-                strPermissionIds.push(nodes[i].permissionId);
+                strPermissionIds.push(nodes[i].id);//权限id
             }
-            var permissionIds = strPermissionIds.join(",");
+            var permissionIds = strPermissionIds.join(",");//将数组拼接成字符串
             // console.log(roleId);
             // console.log(permissionIds);
-            $.post("/role/savePermissionSet", {permissionIds: permissionIds, roleId: roleId}, function (res) {
+            $.post("<%=basePath%>/role/savePermissionSet", {permissionIds: permissionIds, roleId: roleId}, function (res) {
                 if (res.ret) {
                     $.messager.alert("系统提示", "设置成功！");
                     $("#dlg2").dialog("close");

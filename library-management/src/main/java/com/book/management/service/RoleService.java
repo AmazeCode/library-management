@@ -15,10 +15,10 @@ public interface RoleService {
     List<Role> findByUserId(Long id);
 
     /**
-     * 删除用户角色信息
+     * 删除用户角色关联信息
      * @param userId
      */
-    void deleteRoleUserByUserId(Long userId);
+    int deleteRoleUserByUserId(Long userId);
 
     /**
      * 获取角色集合
@@ -32,4 +32,40 @@ public interface RoleService {
      * @return
      */
     int getTotalRole();
+
+    /**
+     * 添加角色信息
+     * @param role
+     * @return
+     */
+    int saveRole(Role role);
+
+    /**
+     * 更新角色信息
+     * @param role
+     * @return
+     */
+    int updateRole(Role role);
+
+    /**
+     * 校验角色名称是否存在
+     * @param roleName
+     * @param id
+     * @return
+     */
+    boolean checkRoleNameIsExist(String roleName,Integer id);
+
+    /**
+     * 删除角色信息
+     * @param id
+     * @return
+     */
+    int deleteRoleById(Integer id);
+
+    /**
+     * 保存角色权限
+     * @param map
+     * @return
+     */
+    int insertRolePermissions(Map<String,Object> map);
 }

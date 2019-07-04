@@ -103,4 +103,25 @@
       type_note = #{typeNote,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 查询图书类型 -->
+  <select id="selectBookTypeListByBookTypeId" resultMap="BaseResultMap" parameterType="Map">
+    select <include refid="Base_Column_List"/>
+    from  t_book_type where id = #{id}
+  </select>
+
+  <!-- 查询所有图书分类 -->
+  <select id="queryAllBookType" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from  t_book_type
+  </select>
+
+  <select id="countByBookTypeName" parameterType="map" resultType="java.lang.Integer">
+    select count(1)
+    from t_book_type
+    where  type_name = #{typeName,jdbcType=VARCHAR}
+    <if test="id != null">
+      AND id != #{id,jdbcType=INTEGER}
+    </if>
+  </select>
 </mapper>

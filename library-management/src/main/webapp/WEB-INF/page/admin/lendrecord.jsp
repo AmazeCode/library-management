@@ -1,27 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-%>
 <html>
 <head>
     <title>MYLIBRARY-借还记录</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href=<%=basePath%>/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/dist/css/AdminLTE.min.css">
+    <link rel="shortcut icon" href="<%=basePath%>/static/favicon.ico"/>
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/metro/easyui.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/color.css">
     <style>
         .datagrid-header-row, .datagrid-row {
             height: 40px;
         }
-
         body {
             font-family: verdana, helvetica, arial, sans-serif;
         }
@@ -44,61 +39,51 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info" style="margin-bottom: 2px">
-
-
                 <div class="easyui-accordion" style="width:100%">
                     <div title="借阅者信息:" data-options="iconCls:'icon-search'" style="overflow:auto;padding:10px">
                         <div class="box-body">
                             <strong>借阅者编号</strong>
-                            <p class="text-muted">${user.userId}</p>
+                            <p class="text-muted">${user.id}</p>
                             <hr>
                             <strong>姓名</strong>
-                            <p class="text-muted">${user.userTrueName}</p>
+                            <p class="text-muted">${user.realName}</p>
                             <hr>
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <table id="dg" title="借还记录列表" iconCls="icon-more" class="easyui-datagrid" width="100%"
-                   url="/book/lendreturnrecord"
+                   url="<%=basePath%>/lend/lendreturnrecord"
                    pagination="true"
                    fitColumns="true" rownumbers="true">
                 <thead>
                 <th field="bookNames" width="300" align="center">书名</th>
                 <th field="lendDate" width="200" align="center">借出日期</th>
                 <th field="shouldReturnDate" width=200" align="center">应还日期</th>
-                <th field="ReturnDate" width="200" align="center" formatter="formatReturnDate">归还日期</th>
-                <th field="DamageDegree" width="200" align="center" formatter="formatDamageDegree">损毁程度</th>
-                <th field="ExtendedDays" width="200" align="center" formatter="formatExtendedDays">超期天数</th>
-
+                <th field="returnDate" width="200" align="center" formatter="formatReturnDate">归还日期</th>
+                <th field="damageDegree" width="200" align="center" formatter="formatDamageDegree">损毁程度</th>
+                <th field="extendedDays" width="200" align="center" formatter="formatExtendedDays">超期天数</th>
                 </thead>
             </table>
-
-
         </div>
     </div>
 </section>
-
-
 <!-- jQuery 3 -->
-<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="<%=basePath%>/static/dist/js/adminlte.min.js"></script>
 <!-- jquery easyui -->
-<script src="/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
-<script src="/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-<script src="/static/js/loading.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="<%=basePath%>/static/js/loading.js"></script>
 <script>
-
     if ($.fn.datagrid) {
         $.fn.datagrid.defaults.pageSize = 5;//这里一定要用datagrid.defaults.pageSize
         $.fn.datagrid.defaults.pageList = [5];//这里一定要有，不然上面的也不起效
     }
-
     function formatReturnDate(value, row) {
         if (row.returnDate == null || row.returnDate == "") {
             return "<button class='btn-warning' disabled>未归还</button>";
@@ -114,7 +99,6 @@
             return "<button class='btn-danger' disabled>" + row.damageDegree + "</button>";
         }
     }
-
     function formatExtendedDays(value, row) {
         if (row.extendedDays < 0) {
             return "<button class='btn-info' disabled>未超期</button>";
@@ -141,7 +125,6 @@
             },
         });
     });
-
 </script>
 </body>
 </html>

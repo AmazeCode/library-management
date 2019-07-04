@@ -5,16 +5,18 @@ import com.book.management.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * 注册过滤器
  */
 @Configuration
-public class InterceptorConfig extends WebMvcConfigurerAdapter {
+public class InterceptorConfig implements WebMvcConfigurer {
 
+    /**
+     * 自定义过滤器
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor())
@@ -24,11 +26,19 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/**");
     }
 
+    /**
+     * 登录过滤器
+     * @return
+     */
     @Bean
     public LoginInterceptor loginInterceptor() {
         return new LoginInterceptor();
     }
 
+    /**
+     * 权限过滤器
+     * @return
+     */
     @Bean
     public AuthInterceptor authInterceptor() {
         return new AuthInterceptor();
@@ -45,6 +55,6 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + uploadFilePath);
-        super.addResourceHandlers(registry);
+        //super.addResourceHandlers(registry);
     }
 }

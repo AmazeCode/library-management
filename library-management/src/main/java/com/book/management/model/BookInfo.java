@@ -1,5 +1,7 @@
 package com.book.management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class BookInfo {
@@ -21,11 +23,17 @@ public class BookInfo {
 
     private Integer bookShelf;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private String bookIntroduction;
+    /**
+     * 图书类型名称
+     */
+    private String types;
 
     public Integer getId() {
         return id;
@@ -121,5 +129,13 @@ public class BookInfo {
 
     public void setBookIntroduction(String bookIntroduction) {
         this.bookIntroduction = bookIntroduction == null ? null : bookIntroduction.trim();
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
     }
 }

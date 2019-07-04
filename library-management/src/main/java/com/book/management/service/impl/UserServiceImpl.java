@@ -22,6 +22,7 @@ import java.util.Map;
  * 用户Service
  */
 @Service("userService")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     /**
@@ -90,6 +91,8 @@ public class UserServiceImpl implements UserService {
         if (checkUserPhoneExist(id, user.getUserPhone())) {
             throw new ParamException("手机号已被占用");
         }
+        //更新时间
+        user.setUpdateTime(new Date());
 
         return userMapper.updateByPrimaryKeySelective(user);
     }
@@ -145,7 +148,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public int updateUserState(User user) {
         Map<String,Object> condition = new HashMap<String,Object>();
         condition.put("id",user.getId());
@@ -161,8 +163,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public int insertUserRoles(Map<String, Object> map) {
         return userMapper.insertUserRoles(map);
+    }
+
+    @Override
+    public int deleteRoleUserByRoleId(Integer roleId) {
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("roleId",roleId);
+        return userMapper.deleteRoleUserByRoleId(map);
     }
 }

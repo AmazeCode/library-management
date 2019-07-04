@@ -46,4 +46,18 @@ public interface RoleMapper {
      * @return
      */
     int getTotalRole();
+
+    /**
+     * 根据角色名称查询角色个数
+     * @param map
+     * @return
+     */
+    int countByRoleName(Map<String,Object> map);
+
+    /**
+     * 保存角色权限信息
+     * @param map
+     * @return
+     */
+    int insertRolePermissions(Map<String,Object> map);
 }

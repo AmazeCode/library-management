@@ -195,4 +195,45 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 分页查询图书集合 -->
+  <select id="selectBookInfoList" resultMap="ResultMapWithBLOBs" parameterType="Map">
+    select
+      <include refid="Base_Column_List" />,
+      <include refid="Blob_Column_List" />
+    from t_book_info
+    <where>
+      <if test="bookSerial != null and bookSerial != ''">
+        book_serial like concat('%',#{bookSerial},'%')
+      </if>
+      <if test="bookName != null and bookName != ''">
+        and book_name like concat('%',#{bookName},'%')
+      </if>
+      <if test="bookAuthor != null and bookAuthor != ''">
+        and book_author like concat('%',#{bookAuthor},'%')
+      </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+  </select>
+
+  <!-- 条件查询总条数 -->
+  <select id="getTotalBook" resultType="java.lang.Integer" parameterType="Map">
+    select
+      count(*)
+    from t_book_info
+    <where>
+      <if test="bookSerial != null and bookSerial != ''">
+        book_serial like concat('%',#{bookSerial},'%')
+      </if>
+      <if test="bookName != null and bookName != ''">
+        and book_name like concat('%',#{bookName},'%')
+      </if>
+      <if test="bookAuthor != null and bookAuthor != ''">
+        and book_author like concat('%',#{bookAuthor},'%')
+      </if>
+    </where>
+  </select>
+
 </mapper>

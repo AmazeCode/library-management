@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-
+            <%-- toolbar:工具栏 --%>
             <table id="dg" title="用户列表" iconCls="icon-man" class="easyui-datagrid" width="100%"
                    url="<%=basePath%>/user/list"
                    toolbar="#tb" pagination="true"

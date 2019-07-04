@@ -1,22 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-%>
 <html>
 <head>
     <title>MYLIBRARY-图书借阅</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/dist/css/AdminLTE.min.css">
+    <link rel="shortcut icon" href="<%=basePath%>/static/favicon.ico"/>
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/metro/easyui.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/color.css">
 </head>
 <body>
 <section class="content-header">
@@ -54,8 +50,6 @@
                         <p class="text-muted" id="userState"></p>
                         <hr>
                     </div>
-
-
                 </div>
                 <div style="margin-bottom:10px"></div>
                 <div id="p2" class="easyui-panel" title="图书信息" style="width:100%;height:250px;padding:10px;">
@@ -76,7 +70,6 @@
                     </div>
 
                 </div>
-
                 <div class="box-footer">
                     <input id="cc" name="days" value="">
                     <button type="button" id="checkBookLend" disabled onclick="checkBookLend()"
@@ -91,15 +84,15 @@
 
 
 <!-- jQuery 3 -->
-<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="<%=basePath%>/static/dist/js/adminlte.min.js"></script>
 <!-- jquery easyui -->
-<script src="/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
-<script src="/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-<script src="/static/js/loading.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="<%=basePath%>/static/js/loading.js"></script>
 <script>
     function resetSearchUserValue() {
         // $("#checkBookLend").removeAttr("disabled");
@@ -123,13 +116,13 @@
         }
         $.ajax({
             type: "POST",
-            url: "/user/userInfo?userId=" + userId,
+            url: "<%=basePath%>/user/userInfo?id=" + userId,
             dateType: "json",
             success: function (res) {
                 if (res.ret) {
                     var row = res.data;
-                    $("#userName").html(row.userTrueName);
-                    if (row.userState == 1) {
+                    $("#userName").html(row.realName);
+                    if (row.state == 1) {
                         $("#userState").html("<button class='btn-success' disabled>正常</button>");
                         $("#checkBookLend").attr("disabled", false);
                     } else {
@@ -141,8 +134,6 @@
                 }
             }
         });
-
-
     }
 
     function searchBook() {
@@ -153,7 +144,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/bookinfo/info?bookId=" + bookId,
+            url: "<%=basePath%>/bookinfo/info?id=" + bookId,
             dateType: "json",
             success: function (res) {
                 if (res.ret) {
@@ -206,7 +197,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/book/lendBook",
+            url: "<%=basePath%>/lend/lendBook",
             dateType: "json",
             data: {
                 userId: userId,

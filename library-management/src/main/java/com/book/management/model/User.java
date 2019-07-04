@@ -1,5 +1,7 @@
 package com.book.management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class User {
@@ -17,8 +19,10 @@ public class User {
 
     private Integer state; //约定 1：正常状态  0：禁用状态   默认正常
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     //不对应数据库字段

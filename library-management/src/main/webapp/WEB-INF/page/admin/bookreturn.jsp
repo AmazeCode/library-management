@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luhailiang
-  Date: 2019-04-18
-  Time: 22:21
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
 <html>
@@ -13,13 +6,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/dist/css/AdminLTE.min.css">
+    <link rel="shortcut icon" href="<%=basePath%>/static/favicon.ico"/>
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/metro/easyui.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/color.css">
 </head>
 <body>
 <section class="content-header">
@@ -37,7 +30,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info" style="margin-bottom: 2px">
-
                 <div id="p1" class="easyui-panel" style="width:100%;height:600px;padding:10px;">
                     <div style="margin-bottom:10px">
                         <input class="easyui-textbox" id="bookId" label="图书编号:" style="width:400px">
@@ -88,16 +80,10 @@
                             <input class="easyui-textbox" required id="sunhuimiaoshu" data-options="multiline:true"
                                    value=""
                                    style="width:300px;height:100px">
-
                         </div>
                     </div>
-
-
                 </div>
-
-
             </div>
-
 
             <div class="box-footer">
                 <button type="button" id="checkBookReturn" disabled onclick="checkBookReturn()"
@@ -110,15 +96,15 @@
     </div>
 </section>
 <!-- jQuery 3 -->
-<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="<%=basePath%>/static/dist/js/adminlte.min.js"></script>
 <!-- jquery easyui -->
-<script src="/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
-<script src="/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-<script src="/static/js/loading.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="<%=basePath%>/static/js/loading.js"></script>
 <script>
     var data = [
         {"text": "轻微损毁", "id": "轻微损毁"},
@@ -150,7 +136,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/book/bookInfoAndUserByBookId?bookId=" + bookId,
+            url: "<%=basePath%>/return/bookInfoAndUserByBookId?bookId=" + bookId,
             dateType: "json",
             success: function (res) {
                 if (res.ret) {
@@ -160,11 +146,10 @@
                     } else {
                         $("#checkBookReturn").removeAttr("disabled")
                     }
-
                     // console.log(row)
-                    $("#lendReturnId").val(row.lendReturnId)
+                    $("#lendReturnId").val(row.id)
                     $("#userId").html(row.userId);
-                    $("#userName").html(row.user.userTrueName);
+                    $("#userName").html(row.user.realName);
                     $("#lendDate").html(row.lendDate);
                     $("#bookName").html(row.bookInfo.bookName);
                     if (row.bookInfo.bookState == 0) {
@@ -199,11 +184,11 @@
     }
 
     function checkBookReturn() {
-        var lendReturnId = $("#lendReturnId").val();
+        var id = $("#lendReturnId").val();
         var bookId = $("#bookId").val();
         var isDamage = $('input:radio[name="optionsRadiosinline"]:checked').val();
         var damageDegree = $('#jibie').combobox("getValue");
-        var damageNote = $("#sunhuimiaoshu").textbox("getText");
+        var note = $("#sunhuimiaoshu").textbox("getText");
 
         if (bookId == "") {
             $.messager.alert("系统提示", "图书编号不能为空");
@@ -215,14 +200,14 @@
                     if (r) {
                         $.ajax({
                             type: "POST",
-                            url: "/book/returnBook",
+                            url: "<%=basePath%>/return/returnBook",
                             dateType: "json",
                             data: {
-                                lendReturnId: lendReturnId,
+                                id: id,
                                 bookId: bookId,
                                 isDamage: isDamage,
                                 damageDegree: damageDegree,
-                                damageNote: damageNote
+                                note: note
                             },
                             success: function (res) {
                                 if (res.ret) {
@@ -238,14 +223,14 @@
         } else {
             $.ajax({
                 type: "POST",
-                url: "/book/returnBook",
+                url: "<%=basePath%>/return/returnBook",
                 dateType: "json",
                 data: {
-                    lendReturnId: lendReturnId,
+                    id: id,
                     bookId: bookId,
                     isDamage: isDamage,
                     damageDegree: damageDegree,
-                    damageNote: damageNote
+                    note: note
                 },
                 success: function (res) {
                     if (res.ret) {
@@ -259,6 +244,5 @@
         }
     }
 </script>
-
 </body>
 </html>

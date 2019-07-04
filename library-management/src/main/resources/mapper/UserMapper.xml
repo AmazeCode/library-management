@@ -156,16 +156,16 @@
     from t_user
     <where>
       <if test="userName != null and userName != ''">
-        user_name like #{userName}
+        user_name like concat('%',#{userName},'%')
       </if>
       <if test="userTrueName != null and userTrueName != ''">
-        and real_name like #{realName}
+        and real_name like concat('%',#{realName},'%')
       </if>
       <if test="userEmail != null and userEmail != ''">
         and user_email like #{userEmail}
       </if>
       <if test="userPhone != null and userPhone != ''">
-        and user_phone like #{userPhone}
+        and user_phone like concat('%',#{userPhone},'%')
       </if>
     </where>
     <if test="start!=null and size!=null">
@@ -224,12 +224,17 @@
     update t_user set state = #{state,jdbcType=INTEGER} where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <!--  -->
+  <!-- 添加用户角色关联 -->
   <insert id="insertUserRoles" parameterType="Map">
     insert into t_role_user (user_id, role_id ) values
     <foreach collection="roleIds" item="roleId" separator=",">
       ( #{userId}, #{roleId} )
     </foreach>
   </insert>
+
+  <!-- 删除用户角色关联 -->
+  <delete id="deleteRoleUserByRoleId" parameterType="map">
+    delete from t_role_user where role_id = #{roleId}
+  </delete>
 
   </mapper>

@@ -1,9 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-%>
 <html>
 <head>
     <title>MYLIBRARY-图书信息</title>
@@ -22,11 +18,9 @@
         .datagrid-header-row, .datagrid-row {
             height: 40px;
         }
-
         body {
             font-family: verdana, helvetica, arial, sans-serif;
         }
-
     </style>
 </head>
 <body>
@@ -48,7 +42,7 @@
 
                 <div class="easyui-accordion" style="width:100%">
                     <div title="按条件查询:" data-options="iconCls:'icon-search'" style="overflow:auto;padding:10px">
-                        ISBN:&nbsp;<input type="text" id="s_bookIsbn" size="20"
+                        ISBN:&nbsp;<input type="text" id="s_bookSerial" size="20"
                                           onkeydown="if(event.keyCode==13) searchBook()"/>
                         书名:&nbsp;<input type="text" id="s_bookName" size="20"
                                         onkeydown="if(event.keyCode==13) searchBook()"/>
@@ -72,17 +66,17 @@
                    fitColumns="false" singleSelect="false">
                 <thead>
                 <th field="ck" checkbox="true"></th>
-                <th field="bookId" width="100" align="center">编号</th>
-                <th field="bookIsbn" width="200" align="center">ISBN</th>
+                <th field="id" width="100" align="center">ISBN</th>
+                <th field="bookSerial" width="200" align="center">图书序列号</th>
                 <th field="bookName" width="400" align="center">名称</th>
                 <th field="bookAuthor" width="200" align="center">作者</th>
                 <th field="bookPublish" width="200" align="center">出版社</th>
                 <th field="bookPrice" width="100" align="center">价格</th>
-                <th field="ss" width="200" align="center" formatter="formatBookState">状态</th>
-                <th field="types" width="200" align="center">所属分类</th>
+                <th field="bookState" width="200" align="center" formatter="formatBookState">状态</th>
+                <th field="bookType" width="200" align="center">所属分类</th>
                 <th field="bookShelf" width="100" align="center">书架号</th>
-                <th field="bookCreateTime" width="200" align="center">创建时间</th>
-                <th field="bookLastModifyTime" width="200" align="center">更新时间</th>
+                <th field="createTime" width="200" align="center">创建时间</th>
+                <th field="updateTime" width="200" align="center">更新时间</th>
                 <th field="aa" width="200" align="center" formatter="formatOperate">操作</th>
                 </thead>
             </table>
@@ -103,7 +97,7 @@
                 <form id="fm" novalidate style="margin:0;padding:20px 50px">
 
                     <div style="margin-bottom:10px">
-                        <input name="bookIsbn" id="n_bookIsbn" class="easyui-textbox"
+                        <input name="bookIsbn" id="n_bookSerial" class="easyui-textbox"
                                required="true"
                                label="ISBN:"
                                style="width:100%">
@@ -162,7 +156,6 @@
                 <div style="margin-bottom:10px;padding: 20px">
                     <ul id="bookTypeTree" class="ztree"></ul>
                 </div>
-
             </div>
             <div id="dlg1-buttons">
                 <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
@@ -175,9 +168,8 @@
             <div id="dlg2" class="easyui-dialog" style="width:80%"
                  data-options="closed:true,modal:true,border:'thin',buttons:'#dlg2-buttons'">
                 <form id="fm1" novalidate style="margin:0;padding:20px 50px">
-
                     <div style="margin-bottom:10px">
-                        <input name="bookIsbn" id="u_bookIsbn" class="easyui-textbox"
+                        <input name="bookSerial" id="u_bookIsbn" class="easyui-textbox"
                                required="true"
                                label="ISBN:"
                                style="width:100%">
@@ -266,7 +258,6 @@
                         <strong>图书简介</strong>
                         <div id="introductions">
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -274,7 +265,6 @@
         </div>
     </div>
 </section>
-
 
 <!-- jQuery 3 -->
 <script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
@@ -305,10 +295,8 @@
             return "<button class='btn-warning' disabled>借出</button>";
         }
     }
-
     function formatOperate(value, row) {
-
-        return "<button onclick=\"showBookDetail('" + row.bookId + "')\" class='btn-info'>查看详情</button>";
+        return "<button onclick=\"showBookDetail('" + row.id + "')\" class='btn-info'>查看详情</button>";
     }
 
     function showBookDetail(bookId) {
@@ -363,16 +351,16 @@
         });
     })
 
-
     $(function () {
         var setting = {
             async: {
                 enable: true,
-                url: "<%=basePath%>/booktype/loadAllBookTypeData",
+                type: "post",
+                url: "<%=basePath%>/bookType/loadAllBookTypeData",
             },
             data: {
                 key: {
-                    name: "bookTypeName"
+                    name: "typeName"
                 }
             },
             callback: {//回调函数
@@ -380,7 +368,6 @@
                 onClick: zTreeOnClick
             },
         }
-
         $.fn.zTree.init($("#bookTypeTree"), setting);
     })
 
@@ -398,10 +385,13 @@
     var bookTypeName;
 
     function zTreeOnClick(event, treeId, treeNode) {
-        bookTypeId = treeNode.bookTypeId;
-        bookTypeName = treeNode.bookTypeName;
+        bookTypeId = treeNode.id;
+        bookTypeName = treeNode.typeName;
     };
 
+    /**
+     * 选择图书分类
+     */
     function chooseBookType() {
         $("#n_bookType").textbox("setValue", bookTypeName);
         $("#n_bookTypeId").val(bookTypeId);
@@ -410,8 +400,11 @@
         $("#dlg1").dialog("close");
     }
 
+    /**
+     * 保存图书信息
+     */
     function saveBookInfo() {
-        var bookIsbn = $("#n_bookIsbn").val()
+        var bookSerial = $("#n_bookSerial").val()
         var bookName = $("#n_bookName").val()
         var bookAuthor = $("#n_bookAuthor").val()
         var bookPublish = $("#n_bookPublish").val()
@@ -429,7 +422,7 @@
                 return isValid; // 返回false终止表单提交
             },
             data: {
-                bookIsbn: bookIsbn,
+                bookSerial: bookSerial,
                 bookName: bookName,
                 bookAuthor: bookAuthor,
                 bookPublish: bookPublish,
@@ -460,11 +453,11 @@
         $("#dlg2").dialog("open").dialog("center").dialog("setTitle", "编辑图书");
         $("#fm1").form("load", row);
         CKEDITOR.instances.u_bookIntroduction.setData(row.bookIntroduction);
-        url = "<%=basePath%>/bookinfo/update?bookId=" + row.bookId;
+        url = "<%=basePath%>/bookinfo/update?id=" + row.id;
     }
 
     function updateBookInfo() {
-        var bookIsbn = $("#u_bookIsbn").val()
+        var bookSerial = $("#u_bookIsbn").val()
         var bookName = $("#u_bookName").val()
         var bookAuthor = $("#u_bookAuthor").val()
         var bookPublish = $("#u_bookPublish").val()
@@ -481,7 +474,7 @@
                 return isValid; // 返回false终止表单提交
             },
             data: {
-                bookIsbn: bookIsbn,
+                bookSerial: bookSerial,
                 bookName: bookName,
                 bookAuthor: bookAuthor,
                 bookPublish: bookPublish,
@@ -508,12 +501,12 @@
             $.messager.alert("系统提示", "请选择一条要删除的数据！");
             return;
         }
-        var bookId = selectedRows[0].bookId;
+        var bookId = selectedRows[0].id;
         $.messager.confirm("系统提示", "您确定要删除这条数据吗?", function (r) {
             if (r) {
                 $.ajax({
                     type: "DELETE",
-                    url: "<%=basePath%>/bookinfo/delete?bookId=" + bookId,
+                    url: "<%=basePath%>/bookinfo/delete?id=" + bookId,
                     success: function (res) {
                         if (res.ret) {
                             $.messager.alert("系统提示", "删除成功！");
@@ -527,35 +520,34 @@
         });
     }
 
+    /**
+     * 页面初始化后执行
+     */
     $(document).ready(function () {
-
         $("#dg").datagrid({
             onDblClickRow: function (index, row) {
                 $("#dlg2").dialog("open").dialog("center").dialog("setTitle", "编辑图书");
                 $("#fm1").form("load", row);
                 CKEDITOR.instances.u_bookIntroduction.setData(row.bookIntroduction);
-                url = "<%=basePath%>/bookinfo/update?bookId=" + row.bookId;
+                url = "<%=basePath%>/bookinfo/update?bookId=" + row.id;
             }
         });
-
     });
 
     function searchBook() {
         $("#dg").datagrid("load", {
-            "bookIsbn": $("#s_bookIsbn").val(),
+            "bookSerial": $("#s_bookSerial").val(),
             "bookName": $("#s_bookName").val(),
             "bookAuthor": $("#s_bookAuthor").val(),
-
         })
     }
 
     function resetSearchValue() {
-        $("#s_bookIsbn").val("");
+        $("#s_bookSerial").val("");
         $("#s_bookName").val("");
         $("#s_bookAuthor").val("");
         searchBook();
     }
-
 </script>
 </body>
 </html>

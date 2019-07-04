@@ -5,6 +5,7 @@ import com.book.management.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PermissionMapper {
@@ -27,9 +28,23 @@ public interface PermissionMapper {
     List<Permission> queryAll();
 
     /**
+     * 获取权限id集合
+     * @param roleId
+     * @return
+     */
+    List<Integer> queryPermissionIdsByRoleId(Integer roleId);
+
+    /**
      * 根据用户信息查看权限信息
      * @param user
      * @return
      */
     List<Permission> queryPermissionsByUser(User user);
+
+    /**
+     * 删除角色权限关联信息
+     * @param map
+     * @return
+     */
+    int deleteRolePermissionByRoleId(Map<String,Object> map);
 }

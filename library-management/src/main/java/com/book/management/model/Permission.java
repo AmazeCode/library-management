@@ -23,14 +23,15 @@ public class Permission {
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
+    /***************************easyui treeGrid字段需要***************************************/
     //不对应数据库字段
     private boolean open = true;
     //不对应数据库字段
     private boolean checked = false;
     //不对应数据库字段
     private List<Permission> children = new ArrayList<>();
-    //不对应数据库字段(easy-ui tree grid)
-    private Integer parentId;
+    //不对应数据库字段(easy-ui tree grid),父节点id
+    private Integer _parentId;
 
     public Integer getId() {
         return id;
@@ -112,11 +113,11 @@ public class Permission {
         this.children = children;
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public Integer get_parentId() {
+        return _parentId;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void set_parentId(Integer _parentId) {
+        this._parentId = _parentId;
     }
 }

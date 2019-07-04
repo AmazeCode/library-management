@@ -10,11 +10,12 @@
     <result column="should_return_date" property="shouldReturnDate" jdbcType="DATE" />
     <result column="return_date" property="returnDate" jdbcType="DATE" />
     <result column="is_damage" property="isDamage" jdbcType="INTEGER" />
+    <result column="damage_degree" property="damageDegree" jdbcType="VARCHAR" />
     <result column="note" property="note" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, book_id, user_id, lend_date, should_lend_days, should_return_date, return_date, 
-    is_damage, note
+    is_damage, damage_degree, note
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,12 +30,12 @@
   <insert id="insert" parameterType="com.book.management.model.LendBack" >
     insert into t_lend_back (id, book_id, user_id, 
       lend_date, should_lend_days, should_return_date, 
-      return_date, is_damage, note
-      )
+      return_date, is_damage, damage_degree, 
+      note)
     values (#{id,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
       #{lendDate,jdbcType=DATE}, #{shouldLendDays,jdbcType=INTEGER}, #{shouldReturnDate,jdbcType=DATE}, 
-      #{returnDate,jdbcType=DATE}, #{isDamage,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}
-      )
+      #{returnDate,jdbcType=DATE}, #{isDamage,jdbcType=INTEGER}, #{damageDegree,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.book.management.model.LendBack" >
     insert into t_lend_back
@@ -62,6 +63,9 @@
       </if>
       <if test="isDamage != null" >
         is_damage,
+      </if>
+      <if test="damageDegree != null" >
+        damage_degree,
       </if>
       <if test="note != null" >
         note,
@@ -92,6 +96,9 @@
       <if test="isDamage != null" >
         #{isDamage,jdbcType=INTEGER},
       </if>
+      <if test="damageDegree != null" >
+        #{damageDegree,jdbcType=VARCHAR},
+      </if>
       <if test="note != null" >
         #{note,jdbcType=VARCHAR},
       </if>
@@ -121,6 +128,9 @@
       <if test="isDamage != null" >
         is_damage = #{isDamage,jdbcType=INTEGER},
       </if>
+      <if test="damageDegree != null" >
+        damage_degree = #{damageDegree,jdbcType=VARCHAR},
+      </if>
       <if test="note != null" >
         note = #{note,jdbcType=VARCHAR},
       </if>
@@ -136,7 +146,53 @@
       should_return_date = #{shouldReturnDate,jdbcType=DATE},
       return_date = #{returnDate,jdbcType=DATE},
       is_damage = #{isDamage,jdbcType=INTEGER},
+      damage_degree = #{damageDegree,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 查询图书信息 -->
+  <select id="selectBookInfoAndUserByBookId" resultType="com.book.management.model.LendBack" parameterType="int">
+      SELECT
+        book_name  "bookInfo.bookName",
+        book_state  "bookInfo.bookState",
+        l.user_id userId,
+        l.id Id,
+        real_name "user.realName",
+        lend_date lendDate,
+        should_return_date shouldReturnDate
+    FROM
+        t_lend_back l,
+        t_book_info b,
+				t_user u
+    WHERE
+        l.book_id = b.id
+        AND l.user_id = u.id
+        AND l.book_id=#{bookId}
+        AND return_date is null
+  </select>
+  <!-- 分页查询借书记录集合 -->
+  <select id="selectLendReturnRecordByUserId" resultType="com.book.management.model.LendBack"
+          parameterType="map">
+    SELECT
+    book_name "bookInfo.bookName",
+    lend_date lendDate,
+    return_date returnDate,
+    should_return_date shouldReturnDate,
+    damage_degree damageDegree
+    FROM
+    t_lend_back tlb,t_book_info tbi
+    WHERE
+    tlb.book_id=tbi.id
+    AND
+    tlb.user_id=#{userId}
+    <if test="start!=null and size!=null">
+      limit #{start}, #{size}
+    </if>
+  </select>
+  <!-- f查询借书记录集合 -->
+  <select id="getTotalRecord" resultType="java.lang.Integer" parameterType="map">
+        select count(*) from t_lend_back
+        where user_id=#{userId}
+    </select>
 </mapper>

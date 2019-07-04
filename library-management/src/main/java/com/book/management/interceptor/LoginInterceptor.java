@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.book.management.annotation.LoginRequired;
-import com.book.management.annotation.PassToken;
 import com.book.management.annotation.UserLoginToken;
 import com.book.management.model.User;
 import com.book.management.service.UserService;
@@ -37,20 +36,15 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
-        //检查是否有passtoken注解，有则跳过认证
-        if (method.isAnnotationPresent(PassToken.class)) {
-            PassToken passToken = method.getAnnotation(PassToken.class);
-            if (passToken.required()) {
-                return true;
-            }
-        }
+
         //检查有没有需要用户登录的注解
         User currentUser = (User) httpServletRequest.getSession().getAttribute("user");
         if (method.isAnnotationPresent(LoginRequired.class)) {
+            //拿到登录需要注解
             LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
             if (loginRequired.required()) {
                 if (currentUser == null) {
-                    httpServletResponse.sendRedirect("/login.jsp");
+                    httpServletResponse.sendRedirect("/book/login.jsp");
                     return false;
                 }
             }
@@ -58,6 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         //检查有没有需要用户token的注解
         String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
         if (method.isAnnotationPresent(UserLoginToken.class)) {
+            //登录Token
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证

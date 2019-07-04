@@ -1,32 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../common/loading.jsp" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
-%>
 <html>
 <head>
     <title>MYLIBRARY-图书分类</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <link rel="shortcut icon" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" href="/static/bower_components/jquery-easyui/themes/color.css">
-    <link rel="stylesheet" href="/static/bower_components/ztree/zTreeStyle.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/dist/css/AdminLTE.min.css">
+    <link rel="shortcut icon" href="<%=basePath%>/static/favicon.ico"/>
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/metro/easyui.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/bower_components/ztree/zTreeStyle.css">
     <style>
         .datagrid-header-row, .datagrid-row {
             height: 45px;
         }
-
         body {
             font-family: verdana, helvetica, arial, sans-serif;
         }
-
     </style>
 </head>
 <body>
@@ -45,7 +39,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info" style="margin-bottom: 2px">
-
                 <div class="easyui-panel" title="Nested Panel"
                      data-options="width:'100%',minHeight:600,noheader:true,border:true" style="padding:10px;">
                     <div class="easyui-layout" data-options="fit:true">
@@ -55,13 +48,13 @@
                         <div data-options="region:'center'" style="padding:5px">
                             <table class="easyui-datagrid" id="bookTypeList" width="100%"
                                    rownumbers="true" fitColumns="true" singleSelect="false"
-                                   url="/booktype/listByBookTypeId" toolbar="#tb" title="分类列表" iconCls="icon-more">
+                                   url="<%=basePath%>/bookType/listByBookTypeId" toolbar="#tb" title="分类列表" iconCls="icon-more">
                                 <thead>
-                                <th field="bookTypeId" width="30" align="center">分类编号</th>
-                                <th field="bookTypeName" width="100" align="center">分类名称</th>
-                                <th field="bookTypeNote" width="60" align="center">分类描述</th>
-                                <th field="bookTypeCreateTime" width="60" align="center">创建时间</th>
-                                <th field="bookTypeLastModifyTime" width="60" align="center">更新时间</th>
+                                <th field="id" width="30" align="center">分类编号</th>
+                                <th field="typeName" width="100" align="center">分类名称</th>
+                                <th field="typeNote" width="60" align="center">分类描述</th>
+                                <th field="createTime" width="60" align="center">创建时间</th>
+                                <th field="updateTime" width="60" align="center">更新时间</th>
                                 </thead>
                             </table>
                             <div id="tb">
@@ -86,13 +79,13 @@
                                 <form id="fm1" novalidate style="margin:0;padding:20px 50px">
 
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeName" id="ns_bookTypeName" class="easyui-textbox"
+                                        <input name="typeName" id="ns_bookTypeName" class="easyui-textbox"
                                                required="true"
                                                label="分类名称:"
                                                style="width:100%">
                                     </div>
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeNote" id="ns_bookTypeNote" class="easyui-textbox"
+                                        <input name="typeNote" id="ns_bookTypeNote" class="easyui-textbox"
                                                label="分类描述:"
                                                style="width:100%">
                                     </div>
@@ -109,15 +102,14 @@
                             <div id="dlg3" class="easyui-dialog" style="width:400px"
                                  data-options="closed:true,modal:true,border:'thin',buttons:'#dlg3-buttons'">
                                 <form id="fm3" novalidate style="margin:0;padding:20px 50px">
-
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeName" id="nl_bookTypeName" class="easyui-textbox"
+                                        <input name="typeName" id="nl_bookTypeName" class="easyui-textbox"
                                                required="true"
                                                label="分类名称:"
                                                style="width:100%">
                                     </div>
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeNote" id="nl_bookTypeNote" class="easyui-textbox"
+                                        <input name="typeNote" id="nl_bookTypeNote" class="easyui-textbox"
                                                label="分类描述:"
                                                style="width:100%">
                                     </div>
@@ -136,18 +128,18 @@
                                 <!--隐藏域分类Id-->
                                 <form id="fm2" novalidate style="margin:0;padding:20px 50px">
                                     <div style="margin-bottom:10px">
-                                        <input type="hidden" id="u_bookTypeId" name="bookTypeId" class="easyui-textbox"
+                                        <input type="hidden" id="u_bookTypeId" name="id" class="easyui-textbox"
                                                required="true"/>
                                     </div>
 
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeName" id="u_bookTypeName" class="easyui-textbox"
+                                        <input name="typeName" id="u_bookTypeName" class="easyui-textbox"
                                                required="true"
                                                label="分类名称:"
                                                style="width:100%">
                                     </div>
                                     <div style="margin-bottom:10px">
-                                        <input name="bookTypeNote" id="u_bookTypeNote" class="easyui-textbox"
+                                        <input name="typeNote" id="u_bookTypeNote" class="easyui-textbox"
                                                label="分类描述:"
                                                style="width:100%">
                                     </div>
@@ -170,27 +162,27 @@
 
 
 <!-- jQuery 3 -->
-<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="<%=basePath%>/static/dist/js/adminlte.min.js"></script>
 <!-- jquery easyui -->
-<script src="/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
-<script src="/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>/static/bower_components/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 <!-- ztree -->
-<script src="/static/bower_components/ztree/jquery.ztree.all-3.5.min.js"></script>
-<script src="/static/js/loading.js"></script>
+<script src="<%=basePath%>/static/bower_components/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script src="<%=basePath%>/static/js/loading.js"></script>
 <script>
 
     var setting = {
         async: {
             enable: true,
-            url: "/booktype/loadAllBookTypeData",
+            url: "<%=basePath%>/bookType/loadAllBookTypeData",
         },
         data: {
             key: {
-                name: "bookTypeName"
+                name: "typeName"
             }
         },
         callback: {//回调函数
@@ -214,25 +206,28 @@
         }
     }
 
-    var bookTypeId;
-    var bookTypeParentId;
-    var bookTypeName;
-    var bookTypeNote;
+    var id;
+    var typeParentId;
+    var typeName;
+    var typeNote;
 
     function zTreeOnClick(event, treeId, treeNode) {
         $('#bookTypeList').datagrid('reload', {
-            bookTypeId: treeNode.bookTypeId
+            id: treeNode.id
         });
-        bookTypeId = treeNode.bookTypeId;
-        bookTypeParentId = treeNode.bookTypeParentId;
-        bookTypeName = treeNode.bookTypeName;
-        bookTypeNote = treeNode.bookTypeNote;
+        id = treeNode.id;
+        typeParentId = treeNode.typeParentId;
+        typeName = treeNode.typeName;
+        typeNote = treeNode.typeNote;
         // console.log(treeNode)
         // alert(treeNode.getParentNode().bookTypeId + ", " + treeNode.bookTypeName);
     };
 
     var url;
 
+    /**
+     * 新增统计节点
+     */
     function openBookTypeSameLevelAddDialog() {
         var treeObj = $.fn.zTree.getZTreeObj("bookTypeTree");
         var nodes = treeObj.getSelectedNodes();
@@ -240,13 +235,13 @@
             $.messager.alert("系统提示", "请选择一个节点！");
             return;
         }
-        if (bookTypeParentId == null) {
+        if (typeParentId == null) {
             $.messager.alert("系统提示", "无法新增同级节点！");
             return;
         } else {
             $("#dlg1").dialog("open").dialog("center").dialog("setTitle", "新增同级分类");
             $("#fm1").form("clear");
-            url = "/booktype/save";
+            url = "<%=basePath%>/bookType/save";
         }
     }
 
@@ -260,9 +255,9 @@
                 return isValid; // 返回false终止表单提交
             },
             data: {
-                bookTypeParentId: bookTypeParentId,
-                bookTypeName: $("#ns_bookTypeName").val(),
-                bookTypeNote: $("#ns_bookTypeNote").val(),
+                typeParentId: typeParentId,
+                typeName: $("#ns_bookTypeName").val(),
+                typeNote: $("#ns_bookTypeNote").val(),
             },
             success: function (res) {
                 if (res.ret) {
@@ -277,6 +272,9 @@
         });
     }
 
+    /**
+     * 新增下级目录
+     */
     function openBookTypeLowerLevelAddDialog() {
         var treeObj = $.fn.zTree.getZTreeObj("bookTypeTree");
         var nodes = treeObj.getSelectedNodes();
@@ -286,7 +284,7 @@
         } else {
             $("#dlg3").dialog("open").dialog("center").dialog("setTitle", "新增下级分类");
             $("#fm3").form("clear");
-            url = "/booktype/save";
+            url = "<%=basePath%>/bookType/save";
         }
     }
 
@@ -300,9 +298,9 @@
                 return isValid; // 返回false终止表单提交
             },
             data: {
-                bookTypeParentId: bookTypeId,
-                bookTypeName: $("#nl_bookTypeName").val(),
-                bookTypeNote: $("#nl_bookTypeNote").val(),
+                typeParentId: id,
+                typeName: $("#nl_bookTypeName").val(),
+                typeNote: $("#nl_bookTypeNote").val(),
             },
             success: function (res) {
                 if (res.ret) {
@@ -324,15 +322,15 @@
             $.messager.alert("系统提示", "请选择一个节点！");
             return;
         }
-        if (bookTypeParentId == null) {
+        if (typeParentId == null) {
             $.messager.alert("系统提示", "无法修改根节点！");
             return;
         } else {
             $("#dlg2").dialog("open").dialog("center").dialog("setTitle", "修改当前分类");
-            $("#u_bookTypeId").textbox("setValue", bookTypeId);
-            $("#u_bookTypeName").textbox("setValue", bookTypeName);
-            $("#u_bookTypeNote").textbox("setValue", bookTypeNote);
-            url = "/booktype/update";
+            $("#u_bookTypeId").textbox("setValue", id);
+            $("#u_bookTypeName").textbox("setValue", typeName);
+            $("#u_bookTypeNote").textbox("setValue", typeNote);
+            url = "<%=basePath%>/bookType/update";
 
         }
     }
@@ -348,9 +346,9 @@
                 return isValid; // 返回false终止表单提交
             },
             data: {
-                bookTypeId: $("#u_bookTypeId").textbox("getValue"),
-                bookTypeName: $("#u_bookTypeName").textbox("getValue"),
-                bookTypeNote: $("#u_bookTypeNote").textbox("getValue")
+                id: $("#u_bookTypeId").textbox("getValue"),
+                typeName: $("#u_bookTypeName").textbox("getValue"),
+                typeNote: $("#u_bookTypeNote").textbox("getValue")
             },
             success: function (res) {
                 if (res.ret) {
@@ -373,7 +371,7 @@
             $.messager.alert("系统提示", "请选择一个节点！");
             return;
         }
-        if (bookTypeParentId == null) {
+        if (typeParentId == null) {
             $.messager.alert("系统提示", "无法删除根节点！");
             return;
         } else {
@@ -381,7 +379,7 @@
                 if (r) {
                     $.ajax({
                         type: "DELETE",
-                        url: "/booktype/delete?bookTypeId=" + bookTypeId,
+                        url: "<%=basePath%>/bookType/delete?id=" + id,
                         success: function (res) {
                             if (res.ret) {
                                 $.messager.alert("系统提示", "删除成功！");

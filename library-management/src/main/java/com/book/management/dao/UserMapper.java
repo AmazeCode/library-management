@@ -73,4 +73,11 @@ public interface UserMapper {
      * @return
      */
     int insertUserRoles(Map<String,Object> map);
+
+    /**
+     * 删除用户角色关联
+     * @param map
+     * @return
+     */
+    int deleteRoleUserByRoleId(Map<String,Object> map);
 }

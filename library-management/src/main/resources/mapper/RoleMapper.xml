@@ -80,16 +80,16 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <!-- 查询角色集合 -->
+  <!-- 分页条件查询角色集合 -->
   <select id="getRolesList" resultMap="BaseResultMap" parameterType="java.util.Map">
     select
     <include refid="Base_Column_List" />
     from t_role
-   <!-- <where>
+    <where>
       <if test="roleName != null and roleName != ''">
-        role_name like #{roleName}
+        role_name like concat('%',#{roleName},'%')
       </if>
-    </where>-->
+    </where>
       <if test="start!=null and size!=null">
         limit #{start}, #{size}
       </if>
@@ -98,11 +98,11 @@
   <!-- 查询角色总条数 -->
   <select id="getTotalRole" resultType="java.lang.Integer" parameterType="java.util.Map">
     select count(*) from t_role
-    <!--<where>
+    <where>
       <if test="roleName != null and roleName != ''">
         role_name like #{roleName}
       </if>
-    </where>-->
+    </where>
   </select>
 
   <!-- 根据用户id查询用户名 -->
@@ -120,4 +120,21 @@
         from t_role_user
         where user_id = #{userId}
   </delete>
+
+  <!-- 校验角色名称是否存在 -->
+  <select id="countByRoleName" parameterType="map" resultType="java.lang.Integer">
+    select count(1) from t_role
+    where role_name = #{roleName}
+    <if test="id != null">
+      AND id != #{id}
+    </if>
+  </select>
+
+  <!-- 保存角色权限信息 -->
+  <insert id="insertRolePermissions" parameterType="map">
+    insert into t_role_permission (role_id,permission_id) values
+    <foreach collection="permissionIds" item="permissionId" separator=",">
+      (#{roleId},#{permissionId})
+    </foreach>
+  </insert>
 </mapper>

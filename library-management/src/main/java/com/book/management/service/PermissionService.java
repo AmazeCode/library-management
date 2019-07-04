@@ -17,9 +17,23 @@ public interface PermissionService {
     List<Permission> queryAll();
 
     /**
+     * 获取权限id
+     * @param roleId
+     * @return
+     */
+    List<Integer> queryPermissionIdsByRoleId(Integer roleId);
+
+    /**
      * 根据用户信息查找权限集合
      * @param user
      * @return
      */
     List<Permission> queryPermissionsByUser(User user);
+
+    /**
+     * 删除角色权限关联
+     * @param roleId
+     * @return
+     */
+    int deleteRolePermissionByRoleId(Integer roleId);
 }

@@ -29,8 +29,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 获取用户的请求地址
         String uri = request.getRequestURI();
 
-        // 判断当前路径是否需要进行权限验证。
-        // 查询所有需要验证的路径集合
+        // 获取权限信息
         List<Permission> permissions = permissionService.queryAll();
         Set<String> uriSet = new HashSet<>();
         for (Permission permission : permissions) {

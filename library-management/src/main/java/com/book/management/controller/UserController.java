@@ -353,4 +353,18 @@ public class UserController {
             return Result.fail("设置失败");
         }
     }
+
+    /**
+     * 查看用户详情信息
+     * @param id
+     * @return
+     */
+    @PostMapping("/userInfo")
+    @ResponseBody
+    @LoginRequired
+    public Result getUserInfo(Long id){
+        User user = userService.findUserByUserId(id);
+        user.setUserPassword(null);
+        return Result.success(user);
+    }
 }
