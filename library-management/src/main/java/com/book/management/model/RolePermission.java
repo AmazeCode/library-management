@@ -1,26 +1,10 @@
 package com.book.management.model;
 
-import lombok.*;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
 public class RolePermission {
-    //private Integer rolePermissionId;
 
     private Integer roleId;
 
     private Integer permissionId;
-
-    /*public Integer getRolePermissionId() {
-        return rolePermissionId;
-    }
-
-    public void setRolePermissionId(Integer rolePermissionId) {
-        this.rolePermissionId = rolePermissionId;
-    }
 
     public Integer getRoleId() {
         return roleId;
@@ -36,5 +20,5 @@ public class RolePermission {
 
     public void setPermissionId(Integer permissionId) {
         this.permissionId = permissionId;
-    }*/
+    }
 }

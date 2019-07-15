@@ -12,14 +12,6 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class AdminDispatcherController {
-    /**
-     * 登录页面
-     * @return
-     */
-    @GetMapping("/")
-    public String login() {
-        return "redirect:login.jsp";
-    }
 
     /**
      * 登出

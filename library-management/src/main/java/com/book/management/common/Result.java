@@ -1,6 +1,5 @@
 package com.book.management.common;
 
-import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 /**
  * 统一的json返回格式
  */
-@Data
 public class Result {
 
     private boolean ret; // 返回结果
@@ -56,5 +54,29 @@ public class Result {
         result.put("msg", msg);
         result.put("data", data);
         return result;
+    }
+
+    public boolean isRet() {
+        return ret;
+    }
+
+    public void setRet(boolean ret) {
+        this.ret = ret;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

@@ -1,6 +1,5 @@
 package com.book.management;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ErrorPage;
@@ -8,10 +7,7 @@ import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 
-import java.util.Random;
 
-
-@Slf4j
 @SpringBootApplication
 public class LibraryManagementApplication {
 
@@ -32,7 +28,5 @@ public class LibraryManagementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryManagementApplication.class, args);
-		//log.info("项目启动成功！");
 	}
-
 }

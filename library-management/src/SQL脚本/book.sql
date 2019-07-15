@@ -1,6 +1,17 @@
 /*
  Navicat Premium Data Transfer
- Date: 04/07/2019 15:07:56
+
+ Source Server         : 腾讯云
+ Source Server Type    : MySQL
+ Source Server Version : 50726
+ Source Host           :
+ Source Schema         : book
+
+ Target Server Type    : MySQL
+ Target Server Version : 50726
+ File Encoding         : 65001
+
+ Date: 15/07/2019 22:26:01
 */
 
 SET NAMES utf8mb4;

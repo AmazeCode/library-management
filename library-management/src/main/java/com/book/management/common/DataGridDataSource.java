@@ -1,7 +1,5 @@
 package com.book.management.common;
 
-import lombok.Data;
-
 import java.util.List;
 
 /**

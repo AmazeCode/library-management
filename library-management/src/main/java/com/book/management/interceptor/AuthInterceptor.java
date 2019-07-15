@@ -2,6 +2,9 @@ package com.book.management.interceptor;
 
 import com.book.management.model.Permission;
 import com.book.management.service.PermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
