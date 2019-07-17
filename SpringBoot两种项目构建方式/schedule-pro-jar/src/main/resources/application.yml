@@ -1,0 +1,28 @@
+#freeMark配置
+spring:
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+  freemarker:
+    allow-request-override: false
+    cache: false
+    check-template-location: true
+    #编码格式
+    charset: UTF-8
+    #文件主题类型
+    content-type: text/html; charset=utf-8
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    #后缀
+    suffix: .ftl
+    #freemark文件位置
+    template-loader-path: classpath:/templates
+
+server:
+  servlet:
+    #项目名
+    context-path: /schedule
+  #项目端口号
+  port: 8989
