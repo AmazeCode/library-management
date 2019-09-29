@@ -193,6 +193,23 @@
 			<version>4.5.5</version>
 		</dependency>
 		<!-- HttpClient end -->
+
+		<!-- jedis Client start-->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<!-- jedis Client end-->
+
+		<!-- google工具 start -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!-- google工具 end -->
+
 	</dependencies>
 
 	<build>
